@@ -1,0 +1,26 @@
+name: test
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [x86_64]
+
+    steps:
+    - name: Install alcor
+      run: |
+
+        alcor init .
+        alcor activate --auto
+        exec bash
+        alcor install lz4 --url 
+        module load lz4
+
