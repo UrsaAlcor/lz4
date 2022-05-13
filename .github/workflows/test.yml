@@ -8,19 +8,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  compile:
+  install:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         arch: [x86_64]
 
     steps:
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
     - name: Install alcor
       run: |
-
-        alcor init .
+        pip install git+https://github.com/UrsaAlcor/mocli.git
+        alcor init "$(pwd)/aclor"
         alcor activate --auto
         exec bash
-        alcor install lz4 --url 
+        alcor install lz4 --url https://github.com/UrsaAlcor/lz4/releases/download/v0.0.0/lz4_x86_64.zip
         module load lz4
-
+        gcc tests/lz4_main.c -o lz4_main -llz4
